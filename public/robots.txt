@@ -1,0 +1,18 @@
+User-agent: * 
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /index.php/
+
+Sitemap: https://learntechww.com/sitemap.xml
+
+Sitemap: https://learntechww.com/sitemap/universities.xml
+Sitemap: https://learntechww.com/sitemap/colleges.xml
+Sitemap: https://learntechww.com/sitemap/collegecourses.xml
+Sitemap: https://learntechww.com/sitemap/schools.xml
+Sitemap: https://learntechww.com/sitemap/courses.xml
+Sitemap: https://learntechww.com/sitemap/generalcourse.xml
+Sitemap: https://learntechww.com/sitemap/exams.xml
+Sitemap: https://learntechww.com/sitemap/blogs.xml
+Sitemap: https://learntechww.com/sitemap/boards.xml
+Sitemap: https://learntechww.com/sitemap/scholarships.xml
+Sitemap: https://learntechww.com/sitemap/news.xml
