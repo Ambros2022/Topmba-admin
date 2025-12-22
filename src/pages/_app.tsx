@@ -132,58 +132,14 @@ const App = (props: ExtendedAppProps) => {
   const guestGuard = Component.guestGuard ?? false;
 
 
-  
+
   return (
     <>
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>Study in India | Study Abroad | Learntech Edu Solutions</title>
+          <title>Study in India | Study Abroad | admin</title>
           <meta name='keywords' content='Learntechweb' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />
-          <meta name="google-site-verification" content="aiQptX_T_B2qlVcsMutbgRfaKWPDPPLANQi297oo8dA" />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(
-                {
-                  "@context": "https://schema.org",
-                  "@type": "Organization",
-                  "name": "Learntech Edu Solutions Pvt. Ltd.",
-                  "alternateName": "Learntech Edu Solutions",
-                  "url": `${process.env.NEXT_PUBLIC_WEB_URL}`,
-                  "logo": `${process.env.NEXT_PUBLIC_WEB_URL}/images/icons/learntech-logo.png`,
-                  "contactPoint": {
-                    "@type": "ContactPoint",
-                    "telephone": "1800 120 8696",
-                    "contactType": "customer service",
-                    "contactOption": "TollFree",
-                    "areaServed": "IN",
-                    "availableLanguage": "en"
-                  }
-                }
-              ),
-            }}
-          />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(
-                {
-                  "@context": "https://schema.org/",
-                  "@type": "WebSite",
-                  "name": "Learntech Edu Solutions",
-                  "url": `${process.env.NEXT_PUBLIC_WEB_URL}`,
-                  "potentialAction": {
-                    "@type": "SearchAction",
-                    "target": "{search_term_string}",
-                    "query-input": "required name=search_term_string"
-                  }
-                }
-              ),
-            }}
-          />
-
-
 
 
 
@@ -200,11 +156,7 @@ const App = (props: ExtendedAppProps) => {
                       <Guard authGuard={authGuard} guestGuard={guestGuard}>
                         {getLayout(<Component {...pageProps} />)}
                       </Guard>
-                      {/* <ReactHotToast>
-                        <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
-                      </ReactHotToast> */}
                     </ThemeComponent>
-
                   );
                 }}
               </SettingsConsumer>
@@ -212,41 +164,8 @@ const App = (props: ExtendedAppProps) => {
           </AuthProvider>
         </SessionProvider>
       </CacheProvider>
-   
-      <Script
-        id="gtm"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-MHML8KVC');
-              `
-        }}
-      />
 
 
-      <Script
-        id="googletagmanager"
-        src="https://www.googletagmanager.com/gtag/js?id=AW-990332405"
-        strategy="afterInteractive"
-      />
-
-      <Script id="gtag-init" strategy="afterInteractive">
-        {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-990332405');
-  `}
-      </Script>
-
-      {/* <Script
-        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        strategy="afterInteractive"
-      /> */}
     </>
   );
 };

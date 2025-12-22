@@ -8,7 +8,7 @@ module.exports = {
   skipTrailingSlashRedirect: true, // REMOVE
 
   images: {
-    domains: ['api.learntechww.com', 'learntechww.com']
+    domains: ['https://topmba-backend.onrender.com', 'https://topmba-backend.onrender.com']
   },
   async redirects() {
     return [
