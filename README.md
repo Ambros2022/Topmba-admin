@@ -16,6 +16,7 @@ npm i next-share
 npm i react-web-share
 npm i sharp
 npm install framer-motion
+.
 
 
 
