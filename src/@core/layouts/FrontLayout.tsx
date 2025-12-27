@@ -4,8 +4,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 
 // ** Types
 import { BlankLayoutProps } from './types'
-import Header from './components/Header';
-import Footer from './components/Footer';
+
 
 
 
@@ -38,10 +37,7 @@ const BlankLayout = ({ children }: BlankLayoutProps) => {
     <BlankLayoutWrapper className='layout-wrapper'>
 
       <Box className='app-content' sx={{ overflow: 'hidden', minHeight: '100vh', position: 'relative' }}>
-
-        <Header />
         {children}
-        <Footer />
       </Box>
     </BlankLayoutWrapper>
   )

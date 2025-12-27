@@ -17,43 +17,18 @@ interface Props {
 const EnquiryForm: FC<Props> = ({ page, onChanges, placeholder, }) => {
     const router = useRouter();
     const phoneRules: Record<string, RegExp> = {
-    "^\\+91-": /^\+91-\d{10}$/,  // India → 10 digits
-    "^\\+966-": /^\+966-\d{9}$/, // Saudi Arabia → 9 digits
-    "^\\+971-": /^\+971-\d{9}$/, // UAE → 9 digits
-    "^\\+974-": /^\+974-\d{8}$/, // Qatar → 8 digits
-    "^\\+968-": /^\+968-\d{8}$/, // Oman → 8 digits
-    "^\\+965-": /^\+965-\d{8}$/, // Kuwait → 8 digits
-    "^\\+973-": /^\+973-\d{8}$/, // Bahrain → 8 digits
-    "^\\+977-": /^\+977-\d{10}$/ // Nepal → 10 digits
-};
-
-
-    const downloadPDF = async (): Promise<void> => {
-        try {
-            const oReq = new XMLHttpRequest();
-            const URLToPDF = `${process.env.NEXT_PUBLIC_API_URI}storage/brochure/learntech.pdf`;
-
-            oReq.open("GET", URLToPDF, true);
-            oReq.responseType = "blob";
-
-            oReq.onload = function () {
-                if (oReq.status === 200) {
-                    const file = new Blob([oReq.response], { type: 'application/pdf' });
-                    saveAs(file, "Learntechww Brochure 2025.pdf");
-                } else {
-                    console.error(`Failed to download file: ${oReq.status} ${oReq.statusText}`);
-                }
-            };
-
-            oReq.onerror = function () {
-                console.error("Request failed");
-            };
-
-            oReq.send();
-        } catch (error) {
-            console.error("An error occurred while downloading the PDF:", error);
-        }
+        "^\\+91-": /^\+91-\d{10}$/,  // India → 10 digits
+        "^\\+966-": /^\+966-\d{9}$/, // Saudi Arabia → 9 digits
+        "^\\+971-": /^\+971-\d{9}$/, // UAE → 9 digits
+        "^\\+974-": /^\+974-\d{8}$/, // Qatar → 8 digits
+        "^\\+968-": /^\+968-\d{8}$/, // Oman → 8 digits
+        "^\\+965-": /^\+965-\d{8}$/, // Kuwait → 8 digits
+        "^\\+973-": /^\+973-\d{8}$/, // Bahrain → 8 digits
+        "^\\+977-": /^\+977-\d{10}$/ // Nepal → 10 digits
     };
+
+
+
 
     const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -74,21 +49,21 @@ const EnquiryForm: FC<Props> = ({ page, onChanges, placeholder, }) => {
         //         }
         //     ),
 
-                contact_number: Yup.string()
-                        .required("Phone Number is required")
-                        .test("is-valid-contact", "Enter a valid phone number", function (value) {
-                            if (!value) return false;
-            
-                            // Iterate through all phone rules
-                            for (const [prefixPattern, regex] of Object.entries(phoneRules)) {
-                                if (new RegExp(prefixPattern).test(value)) {
-                                    return regex.test(value); // ✅ Valid if it matches the country's rule
-                                }
-                            }
-            
-                            return false; // ❌ Not matching any supported country
-                        }),
-            
+        contact_number: Yup.string()
+            .required("Phone Number is required")
+            .test("is-valid-contact", "Enter a valid phone number", function (value) {
+                if (!value) return false;
+
+                // Iterate through all phone rules
+                for (const [prefixPattern, regex] of Object.entries(phoneRules)) {
+                    if (new RegExp(prefixPattern).test(value)) {
+                        return regex.test(value); // ✅ Valid if it matches the country's rule
+                    }
+                }
+
+                return false; // ❌ Not matching any supported country
+            }),
+
         course: Yup.string().required(`${placeholder || 'Course'} is required`).trim(),
         location: Yup.string().required('Location is required').trim(),
         terms: Yup.boolean()
@@ -115,9 +90,7 @@ const EnquiryForm: FC<Props> = ({ page, onChanges, placeholder, }) => {
                 resetForm();
                 onChanges();
 
-                if (page && page == "Brochure") {
-                    downloadPDF();
-                }
+          
 
                 router.push('/thank-you');
             }
