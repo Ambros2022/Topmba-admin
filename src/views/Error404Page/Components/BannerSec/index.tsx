@@ -36,9 +36,6 @@ const BannerSec = () => {
                             </Link>
                         </div>
                     </div>
-                    <div className='col-md-4 px-md-5 px-5'>
-                        <ContactForm />
-                    </div>
                 </div>
             </div>
         </section>
