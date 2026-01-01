@@ -22,6 +22,7 @@ import { Alert } from '@mui/material'
 
 interface FormInputs {
     name: string
+    listing_order: any
     state_id: any
 }
 
@@ -52,9 +53,9 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
 
     const defaultValues = {
         name: isAddMode ? '' : olddata.name,
-       
-        state_id: (isAddMode || !olddata) ? '' : olddata.state,
 
+        state_id: (isAddMode || !olddata) ? '' : olddata.state,
+        listing_order: isAddMode ? '9999' : olddata.listing_order,
     }
 
     const {
@@ -79,6 +80,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
             let formData: any = {};
             formData.id = updateid;
             formData.name = data.name;
+            formData.listing_order = data.listing_order;
             formData.state_id = data.state_id.id;
 
 
@@ -115,6 +117,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
             let url = 'api/admin/city/add';
             let formData: any = {};
             formData.name = data.name;
+            formData.listing_order = data.listing_order;
             formData.state_id = data.state_id.id;
             try {
                 let response = await axios1.post(url, formData)
@@ -228,7 +231,27 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
                             )}
                         />
                     </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Controller
+                            name='listing_order'
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field: { value, onChange } }) => (
+                                <CustomTextField
+                                    fullWidth
+                                    value={value}
+                                    type='number'
+                                    label='Listing_Order'
+                                    onChange={onChange}
+                                    placeholder=''
+                                    error={Boolean(errors.listing_order)}
+                                    aria-describedby='validation-basic-first-name'
+                                    {...(errors.listing_order && { helperText: 'This field is required' })}
 
+                                />
+                            )}
+                        />
+                    </Grid>
 
                     <Grid item xs={12}>
                         {error && <Alert severity='error'>{error}</Alert>}

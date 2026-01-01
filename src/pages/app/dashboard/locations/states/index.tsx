@@ -192,6 +192,27 @@ const SecondPage = () => {
     {
       flex: 0.175,
       minWidth: 200,
+      field: 'listing_order',
+      headerName: 'Listing Order',
+      renderCell: (params: GridRenderCellParams) => {
+        const { row } = params
+
+        return (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography noWrap variant='body2' sx={{ color: 'text.primary', fontWeight: 600 }}>
+                {row.listing_order}
+              </Typography>
+
+            </Box>
+          </Box>
+        )
+      }
+    },
+    {
+      flex: 0.175,
+      minWidth: 200,
       field: 'country.name',
       headerName: 'Country',
       renderCell: (params: GridRenderCellParams) => {
@@ -232,7 +253,7 @@ const SecondPage = () => {
             orderby,
             size,
             page,
-            fieldname,
+            columnname :fieldname,
             country_id,
 
           },

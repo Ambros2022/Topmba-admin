@@ -141,7 +141,24 @@ const SecondPage = () => {
   };
 
   let columns: GridColDef[] = [
+    {
+      flex: 0.2,
+      minWidth: 100,
+      field: 'type',
+      headerName: 'Type',
+      renderCell: (params: GridRenderCellParams) => {
+        const { row } = params
 
+        return (
+
+          <Typography noWrap variant='body2' sx={{ color: 'text.primary', fontWeight: 600 }}>
+            {row.type}
+          </Typography>
+
+
+        )
+      }
+    },
 
     {
       flex: 0.175,
@@ -176,8 +193,9 @@ const SecondPage = () => {
         )
       }
     },
+
     {
-      flex: 0.4,
+      flex: 0.2,
       minWidth: 100,
       field: 'video_url',
       headerName: 'video',

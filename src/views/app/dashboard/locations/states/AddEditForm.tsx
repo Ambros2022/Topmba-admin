@@ -25,6 +25,7 @@ import { Alert, Checkbox, FormControlLabel } from '@mui/material'
 interface FormInputs {
     name: string
     country_id: any
+    listing_order: any
     is_top: any
 }
 
@@ -33,7 +34,7 @@ interface Authordata {
     isAddMode: boolean;
 }
 
-const AddEditForm: FC<Authordata> = ({ olddata, isAddMode}) => {
+const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState("")
@@ -54,6 +55,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode}) => {
         name: isAddMode || !olddata ? '' : olddata.name,
         country_id: (isAddMode || !olddata) ? '' : olddata.country,
         is_top: isAddMode ? false : olddata.is_top ? olddata.is_top : false,
+        listing_order: isAddMode ? '9999' : olddata.listing_order,
 
     }
 
@@ -79,6 +81,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode}) => {
             formData.id = updateid;
             formData.name = data.name;
             formData.country_id = data.country_id.id;
+            formData.listing_order = data?.listing_order;
             formData.is_top = data?.is_top;
 
             try {
@@ -115,6 +118,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode}) => {
             let formData: any = {};
             formData.name = data.name;
             formData.country_id = data.country_id.id;
+            formData.listing_order = data?.listing_order;
             formData.is_top = data?.is_top;
             try {
                 let response = await axios1.post(url, formData)
@@ -226,7 +230,28 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode}) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={4 } style={{ marginTop: 14 }}> 
+                    <Grid item xs={12} sm={4}>
+                        <Controller
+                            name='listing_order'
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field: { value, onChange } }) => (
+                                <CustomTextField
+                                    fullWidth
+                                    value={value}
+                                    type='number'
+                                    label='Listing_Order'
+                                    onChange={onChange}
+                                    placeholder=''
+                                    error={Boolean(errors.listing_order)}
+                                    aria-describedby='validation-basic-first-name'
+                                    {...(errors.listing_order && { helperText: 'This field is required' })}
+
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4} style={{ marginTop: 14 }}>
 
                         <Controller
 
