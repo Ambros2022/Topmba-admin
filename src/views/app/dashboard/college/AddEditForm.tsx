@@ -48,6 +48,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
     const [amenitiesdata, setAmenitiesdata] = useState([])
     const [streamsdata, setStreamsdata] = useState([])
     const [recoginationsdata, setRecoginationsdata] = useState([])
+    const [examdata, setExamdata] = useState([])
+    const [programtypedata, setProgramtypedata] = useState([])
 
     const [countryId, setCountryId] = useState<any>(isAddMode ? "" : olddata?.country?.id || '');
     const [stateId, setStateId] = useState<any>(isAddMode ? "" : olddata?.state?.id || '');
@@ -144,7 +146,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
         type: isAddMode ? '' : olddata.type,
         home_view_status: isAddMode ? '' : olddata.home_view_status,
         college_type: isAddMode ? '' : olddata.college_type,
-        listing_order: isAddMode ? '' : olddata.listing_order,
+        listing_order: isAddMode ? '99999' : olddata.listing_order,
         established: isAddMode ? '' : olddata.established,
         meta_title: isAddMode ? '' : olddata.meta_title,
         meta_description: isAddMode ? '' : olddata.meta_description,
@@ -164,9 +166,12 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
         state_id: isAddMode ? '' : olddata.state ? olddata.state : '',
         city_id: isAddMode ? '' : olddata.citys ? olddata.citys : '',
         is_associated: isAddMode ? 0 : olddata.is_associated ? olddata.is_associated : 0,
+        is_popular: isAddMode ? 0 : olddata.is_popular ? olddata.is_popular : 0,
 
         collegeamenities: [],
         streams: [],
+        exams: [],
+        programs: [],
         recoginations: [],
         avg_rating: isAddMode ? 0 : olddata.avg_rating,
     }
@@ -270,6 +275,31 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
             console.error(err);
         }
     }, []);
+    const getTypes = useCallback(async () => {
+
+        try {
+            const roleparams: any = {}
+            roleparams['page'] = 1;
+            roleparams['size'] = 10000;
+            const response = await axios1.get('api/admin/programtype/get', { params: roleparams });
+            setProgramtypedata(response.data.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
+    const getExams = useCallback(async () => {
+
+        try {
+            const roleparams: any = {}
+            roleparams['page'] = 1;
+            roleparams['size'] = 10000;
+            const response = await axios1.get('api/admin/exam/get', { params: roleparams });
+            setExamdata(response.data.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
+
     const getrecognition = useCallback(async () => {
 
         try {
@@ -290,8 +320,10 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
         getamenities();
         getstreams();
         getrecognition();
+        getExams();
+        getTypes();
 
-    }, [getamenities, getcountries, getrecognition, getstreams]);
+    }, [getamenities, getcountries, getrecognition, getstreams, getExams, getTypes]);
 
 
 
@@ -303,6 +335,20 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                 amenities_name: item.clgamenities.amenities_name,
             }));
             admfiledReset("amenities", { defaultValue: amenities })
+        }
+        if (!isAddMode && olddata.collegeexams) {
+            const EXAM = olddata.collegeexams.map((item) => ({
+                id: item.clgexams.id,
+                exam_title: item.clgexams.exam_title,
+            }));
+            admfiledReset("exams", { defaultValue: EXAM })
+        }
+        if (!isAddMode && olddata.collegeprograms) {
+            const Programs = olddata.collegeprograms.map((item) => ({
+                id: item.clgprograms.id,
+                name: item.clgprograms.name,
+            }));
+            admfiledReset("programs", { defaultValue: Programs })
         }
         if (!isAddMode && olddata.collegestreams) {
             const STREAM = olddata.collegestreams.map((item) => ({
@@ -321,7 +367,6 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
 
     }, []);
     const onSubmit = async (data: any) => {
-
         if (!isAddMode && olddata.id) {
             const updateid = olddata.id;
             setLoading(true)
@@ -346,6 +391,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                 formData.append('avg_rating', data.avg_rating);
             }
             formData.append('is_associated', data.is_associated);
+            formData.append('is_popular', data.is_popular);
             formData.append('info', data.info);
             formData.append('course_fees', data.course_fees);
             formData.append('admissions', data.admissions);
@@ -358,6 +404,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
             formData.append('city_id', data.city_id.id);
             formData.append('amenities', JSON.stringify(data.amenities));
             formData.append('streams', JSON.stringify(data.streams));
+            formData.append('exams', JSON.stringify(data.exams));
+            formData.append('programs', JSON.stringify(data.programs));
             formData.append('recoginations', JSON.stringify(data.recoginations));
             formData.append('banner_image', selectedbanner);
             formData.append('icon', selectedphoto);
@@ -409,6 +457,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
             formData.append('map', data.map);
             formData.append('video_url', data.video_url);
             formData.append('is_associated', data.is_associated);
+            formData.append('is_popular', data.is_popular);
             if (data.avg_rating) {
                 formData.append('avg_rating', data.avg_rating);
             }
@@ -429,21 +478,25 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                     duration: 2000
                 })
                 setLoading(false);
-
+                console.log("selectedlogo", selectedlogo)
                 return false;
 
             }
+
 
             formData.append('banner_image', selectedbanner);
             formData.append('icon', selectedphoto);
             formData.append('logo', selectedlogo);
             formData.append('amenities', JSON.stringify(data.amenities));
             formData.append('streams', JSON.stringify(data.streams));
+            formData.append('exams', JSON.stringify(data.exams));
+            formData.append('programs', JSON.stringify(data.programs));
             formData.append('recoginations', JSON.stringify(data.recoginations));
 
 
             setLoading(false)
             try {
+                console.log("selectedlogo1", selectedlogo)
                 const response = await axios1.post(url, formData)
                 console.log(response, "response")
 
@@ -959,6 +1012,70 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
 
                                 <Grid item xs={12} sm={4}>
                                     <Controller
+                                        name="exams"
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { value, onChange } }) => {
+                                            return (
+                                                <CustomAutocomplete
+                                                    multiple
+                                                    fullWidth
+                                                    value={value || []}
+                                                    options={examdata}
+                                                    onChange={(event, newValue) => {
+                                                        onChange(newValue);
+                                                    }}
+                                                    filterSelectedOptions
+                                                    id='autocomplete-multiple-outlined'
+                                                    getOptionLabel={(option: any) => option.exam_title}
+                                                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                                                    renderInput={params =>
+                                                        <CustomTextField {...params}
+                                                            label='Select Exams'
+                                                            variant="outlined"
+                                                            error={Boolean(errors.exams)}
+                                                            {...(errors.exams && { helperText: 'This field is required' })}
+                                                            placeholder='exams' />}
+                                                />
+                                            );
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <Controller
+                                        name="programs"
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { value, onChange } }) => {
+                                            // console.log(value); // Log value here
+
+                                            return (
+                                                <CustomAutocomplete
+                                                    multiple
+                                                    fullWidth
+                                                    value={value || []}
+                                                    options={programtypedata}
+                                                    onChange={(event, newValue) => {
+                                                        onChange(newValue);
+                                                    }}
+                                                    filterSelectedOptions
+                                                    id='autocomplete-multiple-outlined'
+                                                    getOptionLabel={(option: any) => option.name}
+                                                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                                                    renderInput={params =>
+                                                        <CustomTextField {...params}
+                                                            label='Select Programs'
+                                                            variant="outlined"
+                                                            error={Boolean(errors.programs)}
+                                                            {...(errors.programs && { helperText: 'This field is required' })}
+                                                            placeholder='programs' />}
+                                                />
+                                            );
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <Controller
                                         name="streams"
                                         control={control}
                                         rules={{ required: true }}
@@ -1272,7 +1389,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
 
 
 
-                                <Grid item xs={12} sm={3}>
+                                {/* <Grid item xs={12} sm={3}>
                                     <Box sx={{ pointerEvents: 'none', opacity: 0.5 }}>
                                         <FileUpload
                                             isAddMode={isAddMode}
@@ -1286,7 +1403,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                                             rejectionMessage='Try another file for upload.'
                                         />
                                     </Box>
-                                </Grid>
+                                </Grid> */}
 
                                 <Grid item xs={12} sm={3}>
                                     <FileUpload
@@ -1297,7 +1414,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                                         maxSize={2000000}
                                         fileNames={fileNameslogo}
                                         label=" Upload Logo"
-                                        helpertext="Recommended size: 600 × 450 px (minimum 300 × 225 px)" 
+                                        helpertext="Recommended size: 600 × 450 px (minimum 300 × 225 px)"
                                         acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf']}
                                         rejectionMessage='Try another file for upload.'
                                     />
@@ -1327,6 +1444,25 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                                         render={({ field: { value, onChange } }) => (
                                             <FormControlLabel
                                                 label='is_associated'
+                                                control={
+                                                    <Checkbox
+                                                        checked={value}
+                                                        onChange={(e) => onChange(e.target.checked ? 1 : 0)}
+
+                                                    />
+                                                }
+                                            />
+                                        )}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={3} style={{ marginTop: '15px' }}>
+                                    <Controller
+                                        name='is_popular'
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { value, onChange } }) => (
+                                            <FormControlLabel
+                                                label='is_popular'
                                                 control={
                                                     <Checkbox
                                                         checked={value}

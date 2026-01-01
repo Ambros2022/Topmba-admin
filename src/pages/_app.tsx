@@ -24,7 +24,7 @@ import themeConfig from 'src/configs/themeConfig';
 // import 'src/@fake-db';
 
 // ** Third Party Import
-// import { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 // ** Component Imports
 // import UserLayout from 'src/layouts/UserLayout';
@@ -144,6 +144,12 @@ const App = (props: ExtendedAppProps) => {
 
 
         </Head>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+          }}
+        />
 
         <SessionProvider session={pageProps.session}> {/* Wrap with SessionProvider */}
           <AuthProvider>

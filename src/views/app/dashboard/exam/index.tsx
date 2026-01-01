@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback, ChangeEvent } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import { DataGrid,  GridColDef, GridPaginationModel, GridRenderCellParams, GridSortModel } from '@mui/x-data-grid'
+import { DataGrid, GridColDef, GridPaginationModel, GridRenderCellParams, GridSortModel } from '@mui/x-data-grid'
 import Link from 'next/link'
 import axios1 from 'src/configs/adminaxios'
 import CustomAvatar from 'src/@core/components/mui/avatar'
@@ -13,7 +13,7 @@ import ServerSideToolbar from 'src/views/table/data-grid/ServerSideToolbar'
 // ** Types Imports
 import { ThemeColor } from 'src/@core/layouts/types'
 import { getInitials } from 'src/@core/utils/get-initials'
-import { Button, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,  Grid,  MenuItem } from '@mui/material'
+import { Button, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem } from '@mui/material'
 
 
 // ** Icon Imports
@@ -245,6 +245,23 @@ const SecondPage = () => {
         )
       }
     },
+    {
+      flex: 0.175,
+      minWidth: 200,
+      field: 'listing_order',
+      headerName: 'Listing Order',
+      renderCell: (params: GridRenderCellParams) => {
+        const { row } = params
+
+        return (
+          <Typography noWrap variant='body2' sx={{ color: 'text.primary', fontWeight: 600 }}>
+            {row.listing_order}
+          </Typography>
+
+
+        )
+      }
+    },
 
     {
       flex: 0.175,
@@ -293,7 +310,7 @@ const SecondPage = () => {
         .catch(() => {
 
           setLoading(false);
-         
+
         });
 
     },
@@ -301,7 +318,7 @@ const SecondPage = () => {
     [paginationModel, reloadpage]
   );
 
-  const paginationchange = (model: GridPaginationModel, ) => {
+  const paginationchange = (model: GridPaginationModel,) => {
     setSize(model.pageSize);
     setPage(model.page + 1);
     setPaginationModel({ page: model.page, pageSize: model.pageSize });
@@ -399,7 +416,7 @@ const SecondPage = () => {
                   value={country_id}
                   onChange={(e: any) => {
                     setCountry_id(e.target.value);
-                  
+
 
                   }}
                   SelectProps={{
@@ -421,7 +438,7 @@ const SecondPage = () => {
                   value={stream_id}
                   onChange={(e: any) => {
                     setStream_id(e.target.value);
-                    
+
 
                   }}
                   SelectProps={{
@@ -457,7 +474,7 @@ const SecondPage = () => {
             rows={rows}
             rowCount={total}
             columns={columns}
-        
+
             sortingMode='server'
             paginationMode='server'
             pageSizeOptions={[10, 15, 25, 50]}

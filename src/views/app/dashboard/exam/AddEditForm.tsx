@@ -1,5 +1,5 @@
 
-import {  useState,  useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import CustomInput from 'src/@core/components/pickersCoustomInput/index'
 import DialogActions from '@mui/material/DialogActions'
 import Card from '@mui/material/Card'
@@ -22,7 +22,7 @@ import { FaTrash } from 'react-icons/fa';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import type { FC, SyntheticEvent } from 'react';
-import {  CardContent, FormControlLabel, FormHelperText, FormLabel, MenuItem, RadioGroup, Tab, Typography, useTheme } from '@mui/material'
+import { CardContent, FormControlLabel, FormHelperText, FormLabel, MenuItem, RadioGroup, Tab, Typography, useTheme } from '@mui/material'
 import FileUpload from 'src/@core/components/dropzone/FileUpload';
 import useIsMountedRef from 'src/hooks/useIsMountedRef'
 import TabContext from '@mui/lab/TabContext'
@@ -132,7 +132,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
     const defaultValues = {
         exam_title: isAddMode ? '' : olddata.exam_title,
         slug: isAddMode ? '' : olddata.slug,
-        upcoming_date: isAddMode ? null : new Date(olddata.upcoming_date),
+        upcoming_date: isAddMode ? null : parseDateOrNull(olddata.upcoming_date),
+        // upcoming_date: isAddMode ? null : new Date(olddata.upcoming_date),
         // exam_dates: isAddMode ? null : new Date(olddata.exam_dates),
         exam_short_name: isAddMode ? '' : olddata.exam_short_name,
         college_type: isAddMode ? '' : olddata.college_type,
@@ -155,6 +156,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
         counseling: isAddMode ? '' : olddata.counseling,
         accept_colleges: isAddMode ? '' : olddata.accept_colleges,
         status: isAddMode ? 'Published' : olddata.status,
+        listing_order: isAddMode ? '99999' : olddata.listing_order,
         promo_banner_status: isAddMode ? 'Draft' : olddata.promo_banner_status ? olddata.promo_banner_status : 'Draft',
         stream_id: isAddMode ? '' : olddata.stream ? olddata.stream : '',
         streams: [],
@@ -244,8 +246,13 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
             formData.append('upcoming_date', data.upcoming_date);
             formData.append('exam_short_name', data.exam_short_name);
             formData.append('meta_title', data.meta_title);
-            formData.append('level_of_study', data.level_of_study);
-            formData.append('types_of_exams', data.types_of_exams);
+            if (data.level_of_study !== undefined && data.level_of_study !== null) {
+                formData.append("level_of_study", data.level_of_study);
+            }
+
+            if (data.types_of_exams !== undefined && data.types_of_exams !== null) {
+                formData.append("types_of_exams", data.types_of_exams);
+            }
             formData.append('meta_description', data.meta_description);
             formData.append('meta_keywords', data.meta_keywords);
             formData.append('overview', data.overview);
@@ -264,7 +271,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
             formData.append('logo', selectedlogo);
             formData.append('promo_banner', selectedbannner);
             formData.append('status', data.status);
-
+            formData.append('listing_order', data.listing_order);
 
 
             try {
@@ -306,8 +313,13 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
             formData.append('meta_title', data.meta_title);
             formData.append('meta_description', data.meta_description);
             formData.append('meta_keywords', data.meta_keywords);
-            formData.append('level_of_study', data.level_of_study);
-            formData.append('types_of_exams', data.types_of_exams);
+            if (data.level_of_study !== undefined && data.level_of_study !== null) {
+                formData.append("level_of_study", data.level_of_study);
+            }
+
+            if (data.types_of_exams !== undefined && data.types_of_exams !== null) {
+                formData.append("types_of_exams", data.types_of_exams);
+            }
             formData.append('overview', data.overview);
             formData.append('exam_dates', data.exam_dates);
             formData.append('eligibility_criteria', data.eligibility_criteria);
@@ -321,6 +333,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
             formData.append('accept_colleges', data.accept_colleges);
             formData.append('promo_banner_status', data.promo_banner_status);
             formData.append('status', data.status);
+            formData.append('listing_order', data.listing_order);
             if (selectedphoto == '') {
 
                 toast.error('Please Upload Photo', {
@@ -1062,6 +1075,26 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
                                     />
 
                                 </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <Controller
+                                        name='listing_order'
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { value, onChange } }) => (
+                                            <CustomTextField
+                                                fullWidth
+                                                value={value}
+                                                type='number'
+                                                label='Listing Order'
+                                                onChange={onChange}
+                                                placeholder=''
+                                                error={Boolean(errors.listing_order)}
+                                                aria-describedby='validation-basic-first-name'
+                                                {...(errors.listing_order && { helperText: 'This field is required' })}
+                                            />
+                                        )}
+                                    />
+                                </Grid>
 
                                 <Grid item xs={12} sm={3}>
                                     <FileUpload
@@ -1364,3 +1397,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode, }) => {
 }
 
 export default AddEditForm
+const parseDateOrNull = (value: any) => {
+    if (!value || value === "null") return null;
+    return new Date(value);
+};

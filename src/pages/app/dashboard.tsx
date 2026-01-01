@@ -133,25 +133,25 @@ const Home = () => {
           title="Colleges"
           value={`${pagedata.Published_colleges}/${pagedata.Total_colleges}`}
         />
-        <CardItem
+        {/* <CardItem
           icon={<BsBank />}
 
           href="/app/dashboard/college/"
           title="Universities"
           value={`${pagedata.Published_universities}/${pagedata.Total_universitys}`}
-        />
-        <CardItem
+        /> */}
+        {/* <CardItem
           icon={<BsBank2 />}
 
           href="/app/dashboard/schools/"
           title="Schools"
           value={`${pagedata.Published_school}/${pagedata.school}`}
-        />
+        /> */}
         <CardItem
           icon={<BsCardHeading />}
 
           href="/app/dashboard/stream/"
-          title="Streams"
+          title="Specialisation"
           value={pagedata.stream}
         />
         <CardItem
@@ -168,13 +168,13 @@ const Home = () => {
           title="College Courses"
           value={`${pagedata.Published_courses}/${pagedata.courses}`}
         />
-        <CardItem
+        {/* <CardItem
           icon={<BsAirplaneEnginesFill />}
 
           href="/app/dashboard/abroadpage/"
           title="Abroad Pages"
           value={pagedata.abroadpages}
-        />
+        /> */}
         <CardItem
           icon={<BsFillPassFill />}
           href="/app/dashboard/exam/"
@@ -191,23 +191,23 @@ const Home = () => {
         <CardItem
           icon={<BsBlockquoteLeft />}
           href="/app/dashboard/blog/"
-          title="Blogs"
+          title="Articles"
           value={`${pagedata.Published_blog}/${pagedata.blog}`}
         />
-        <CardItem
+        {/* <CardItem
           icon={<BsBank2 />}
 
           href="/app/dashboard/schoolboard/"
           title="Boards"
           value={pagedata.schoolboards}
-        />
-        <CardItem
+        /> */}
+        {/* <CardItem
           icon={<BsFillJournalBookmarkFill />}
 
           href="/app/dashboard/scholarship/"
           title="Scholarships"
           value={`${pagedata.Published_scholarships}/${pagedata.scholarships}`}
-        />
+        /> */}
         <CardItem
           icon={<BsFillPersonLinesFill />}
           href="/app/dashboard/jobs_positions/"

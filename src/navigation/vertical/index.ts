@@ -17,7 +17,7 @@ const navigation = (): VerticalNavItemsType => {
     },
 
     {
-      title: 'University/Colleges',
+      title: 'Colleges',
       icon: 'tabler:school',
       auth: false,
       children: [
@@ -36,24 +36,24 @@ const navigation = (): VerticalNavItemsType => {
       ]
     },
 
-    {
-      title: 'School',
-      icon: 'tabler:building',
-      auth: false,
-      children: [
-        {
-          title: 'School Board',
-          path: '/app/dashboard/schoolboard',
-          auth: false
-        },
-        {
-          title: 'Schools',
-          path: '/app/dashboard/schools',
-          // icon: 'tabler:mail',
-          auth: false
-        }
-      ]
-    },
+    // {
+    //   title: 'School',
+    //   icon: 'tabler:building',
+    //   auth: false,
+    //   children: [
+    //     {
+    //       title: 'School Board',
+    //       path: '/app/dashboard/schoolboard',
+    //       auth: false
+    //     },
+    //     {
+    //       title: 'Schools',
+    //       path: '/app/dashboard/schools',
+    //       // icon: 'tabler:mail',
+    //       auth: false
+    //     }
+    //   ]
+    // },
     {
       title: 'Exam',
       path: '/app/dashboard/exam',
@@ -78,28 +78,27 @@ const navigation = (): VerticalNavItemsType => {
       ]
     },
     {
-      title: 'Blogs',
+      title: 'Articles',
       icon: 'tabler:news',
       auth: false,
       children: [
         {
-          title: 'Blogs Categories',
+          title: 'Article  Categories',
           path: '/app/dashboard/blogscategories',
           auth: false
         },
         {
-          title: 'Blog',
+          title: 'Article ',
           path: '/app/dashboard/blog',
           auth: false
         },
         {
-          title: 'Blog Comments',
+          title: 'Article  Comments',
           path: '/app/dashboard/blogcomments',
           auth: false
         }
       ]
     },
-
 
     {
       title: 'User',
@@ -133,6 +132,12 @@ const navigation = (): VerticalNavItemsType => {
       auth: false
     },
     {
+      title: 'Banner',
+      path: '/app/dashboard/banner',
+      icon: 'tabler:frame',
+      auth: false
+    },
+    {
       title: 'Locations',
       icon: 'tabler:map-pin',
       auth: false,
@@ -156,17 +161,17 @@ const navigation = (): VerticalNavItemsType => {
     },
 
     {
-      title: 'Stream',
+      title: 'Specializations',
       path: '/app/dashboard/stream',
       icon: 'tabler:baseline-density-small',
       auth: false
     },
-    {
-      title: 'Substream',
-      path: '/app/dashboard/substream',
-      icon: 'tabler:clipboard-text',
-      auth: false
-    },
+    // {
+    //   title: 'Substream',
+    //   path: '/app/dashboard/substream',
+    //   icon: 'tabler:clipboard-text',
+    //   auth: false
+    // },
     {
       title: 'General Course',
       path: '/app/dashboard/generalcourse',
@@ -188,46 +193,38 @@ const navigation = (): VerticalNavItemsType => {
       auth: false
     },
 
-    {
-      title: 'Banner',
-      path: '/app/dashboard/banner',
-      icon: 'tabler:frame',
-      auth: false
-    },
+    // {
+    //   title: 'Abroad Page',
+    //   path: '/app/dashboard/abroadpage',
+    //   icon: 'tabler:notebook',
+    //   auth: false
+    // },
 
-    {
-      title: 'Abroad Page',
-      path: '/app/dashboard/abroadpage',
-      icon: 'tabler:notebook',
-      auth: false
-    },
+    // {
+    //   title: 'Scholarship',
+    //   icon: 'tabler:layout-sidebar-left-collapse',
+    //   auth: false,
+    //   children: [
+    //     {
+    //       title: 'Scholar Type',
+    //       path: '/app/dashboard/scholar_type ',
+    //       auth: false
+    //     },
 
-    {
-      title: 'Scholarship',
-      icon: 'tabler:layout-sidebar-left-collapse',
-      auth: false,
-      children: [
-        {
-          title: 'Scholar Type',
-          path: '/app/dashboard/scholar_type ',
-          // icon: 'tabler:layout-sidebar-left-collapse',
-          auth: false
-        },
+    //     {
+    //       title: 'Scholar Level',
+    //       path: '/app/dashboard/scholar_level ',
 
-        {
-          title: 'Scholar Level',
-          path: '/app/dashboard/scholar_level ',
-          // icon: 'tabler:notes',
-          auth: false
-        },
-        {
-          title: 'Scholarship',
-          path: '/app/dashboard/scholarship ',
-          // icon: 'tabler:notes',
-          auth: false
-        }
-      ]
-    },
+    //       auth: false
+    //     },
+    //     {
+    //       title: 'Scholarship',
+    //       path: '/app/dashboard/scholarship ',
+
+    //       auth: false
+    //     }
+    //   ]
+    // },
 
     {
       title: 'Landing Page',
@@ -286,8 +283,6 @@ const navigation = (): VerticalNavItemsType => {
           // icon: 'tabler:notes',
           auth: false
         },
-
-
 
         {
           title: 'Job Enquiry',

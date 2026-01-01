@@ -263,6 +263,24 @@ const SecondPage = () => {
 
     {
       flex: 0.175,
+      minWidth: 200,
+      field: 'listing_order',
+      headerName: 'listing_order',
+      renderCell: (params: GridRenderCellParams) => {
+        const { row } = params
+
+        return (
+          <Typography noWrap variant='body2' sx={{ color: 'text.primary', fontWeight: 600 }}>
+            {row.listing_order}
+          </Typography>
+
+
+        )
+      }
+    },
+
+    {
+      flex: 0.175,
       minWidth: 100,
       sortable: false,
       field: 'actions',

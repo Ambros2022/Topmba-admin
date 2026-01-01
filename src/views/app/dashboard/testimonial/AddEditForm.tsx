@@ -261,6 +261,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                                     labelId="testimonial-type-label"
                                     error={Boolean(errors.type)}
                                 >
+                                    <MenuItem value="Home_page">Home Page</MenuItem>
                                     <MenuItem value="Testimonial_page">Testimonial Page</MenuItem>
                                     <MenuItem value="About_us_page">About Us Page</MenuItem>
                                 </CustomSelectField>
