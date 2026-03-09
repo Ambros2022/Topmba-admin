@@ -522,7 +522,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                     maxSize={2000000}
                     fileNames={fileNamesphoto}
                     label=' Upload Logo'
-                    acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf']}
+                     helpertext="Recommended size: 160 × 160 px "
+                    acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf','.webp']}
                     rejectionMessage='Try another file for upload.'
                   />
                 </Grid>
@@ -536,7 +537,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                     maxSize={2000000}
                     fileNames={fileNamesbanner}
                     label=' Upload banner'
-                    acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf']}
+                    acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf','.webp']}
                     rejectionMessage='Try another file for upload.'
                   />
                 </Grid>

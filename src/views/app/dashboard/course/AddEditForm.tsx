@@ -1,5 +1,5 @@
 
-import {  useState,  useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import DialogActions from '@mui/material/DialogActions'
 import Grid from '@mui/material/Grid'
 import Radio from '@mui/material/Radio'
@@ -40,7 +40,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
 
 
 
-  
+
     const schema: any = yup.object().shape({
         course_type: yup
             .string()
@@ -158,11 +158,11 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
             formData.append('college_id', data.college_id.id);
             if (data?.general_course_id?.id) {
                 formData.append('general_course_id', data.general_course_id.id);
-              } else {
+            } else {
                 formData.append('general_course_id', ''); // send empty string, not null, to avoid FormData issues
-              }
+            }
 
-           
+
 
             try {
                 let response = await axios1.post(url, formData)
@@ -211,9 +211,9 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
             formData.append('college_id', data.college_id.id);
             if (data?.general_course_id?.id) {
                 formData.append('general_course_id', data.general_course_id.id);
-              } else {
+            } else {
                 formData.append('general_course_id', ''); // send empty string, not null, to avoid FormData issues
-              }
+            }
 
             try {
                 let response = await axios1.post(url, formData)
@@ -311,7 +311,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
 
                                             error={Boolean(errors.general_course_id)}
                                             {...(errors.general_course_id && { helperText: 'This field is required' })}
-                                            label='Select General Course'
+                                            label='Select Specialization'
                                         />
                                     )}
                                 />
@@ -478,11 +478,11 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                             name='course_details'
                             control={control}
                             rules={{ required: true }}
-                            render={({ field: { value,  } }) => (
+                            render={({ field: { value, } }) => (
                                 <>
                                     <QuillEditor placeholder='Start Writing...' intaialvalue={value}
                                         onChange={(value) => setValue("course_details", value)} />
-                                   
+
                                 </>
                             )}
                         />
@@ -494,11 +494,11 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                             name='eligibility'
                             control={control}
                             rules={{ required: true }}
-                            render={({ field: { value,  } }) => (
+                            render={({ field: { value, } }) => (
                                 <>
                                     <QuillEditor placeholder='Start Writing...' intaialvalue={value}
                                         onChange={(value) => setValue("eligibility", value)} />
-                                   
+
                                 </>
                             )}
                         />
@@ -510,11 +510,11 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                             name='fee_structure'
                             control={control}
                             rules={{ required: true }}
-                            render={({ field: { value,  } }) => (
+                            render={({ field: { value, } }) => (
                                 <>
                                     <QuillEditor placeholder='Start Writing...' intaialvalue={value}
                                         onChange={(value) => setValue("fee_structure", value)} />
-                                    
+
                                 </>
                             )}
                         />

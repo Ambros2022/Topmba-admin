@@ -326,6 +326,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode,  }) => {
                             maxSize={2000000}
                             fileNames={fileNamesphoto}
                             label=" Upload  Image"
+                            helpertext="Recommended upload size: 150 x 150px "
                             acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf']}
                             rejectionMessage='Try another file for upload.'
                         />

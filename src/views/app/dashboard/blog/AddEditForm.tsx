@@ -571,6 +571,7 @@ const {
                       maxSize={2000000}
                       fileNames={fileNamesphoto}
                       label=' Upload Banner Image'
+                        helpertext="Recommended upload size: 400 x 250px "
                       acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf']}
                       rejectionMessage='Try another file for upload.'
                     />

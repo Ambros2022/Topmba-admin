@@ -1414,7 +1414,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                                         maxSize={2000000}
                                         fileNames={fileNameslogo}
                                         label=" Upload Logo"
-                                        helpertext="Recommended size: 600 × 450 px (minimum 300 × 225 px)"
+                                        helpertext="Recommended size:224×224px"
                                         acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf']}
                                         rejectionMessage='Try another file for upload.'
                                     />
@@ -1430,8 +1430,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                                         maxSize={2000000}
                                         fileNames={fileNamesbanner}
                                         label="Upload banner_image"
-                                        helpertext="Upload size webp :800×600 px (min 550×412)"
-                                        acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf']}
+                                        helpertext="Upload size webp :300×300 px"
+                                        acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf','.webp']}
                                         rejectionMessage='Try another file for upload.'
                                     />
                                 </Grid>
