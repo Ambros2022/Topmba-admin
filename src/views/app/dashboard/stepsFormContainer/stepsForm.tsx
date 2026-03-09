@@ -144,6 +144,7 @@ const StepsForm: React.FC<StepsFormProps> = ({ isAddMode, olddata, onSubmit, onD
                             maxSize={2000000}
                             fileNames={fileNames}
                             label="Upload Icon"
+                             helpertext="Recommended upload size: 120 x 120px  "
                             acceptedFormats={['.png', '.jpg', '.jpeg', '.gif', '.svg']}
                             rejectionMessage='Try another file for upload.'
                         />
