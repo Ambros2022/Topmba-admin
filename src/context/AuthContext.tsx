@@ -75,15 +75,7 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
-      // console.log("initAuth", user);
-      setLoading(false)
-
-      const storedToken = getAuthToken()!
-      setLoading(false);
-      setisAuthenticated(true);
-
-      // setUser(response.data.data)
-
+      const storedToken = getAuthToken()
 
       if (storedToken) {
         setLoading(true)
@@ -97,30 +89,28 @@ const AuthProvider = ({ children }: Props) => {
             setLoading(false);
             setisAuthenticated(true);
             setUser(response.data.data);
-
-            // const privileges = response.data.privileges;
-            // setPermission(privileges);
-
-
             axios1.defaults.headers.common["x-access-token"] = storedToken;
 
-
+            if (router.pathname === '/' || router.pathname === '/admin/login') {
+              router.replace('/app/dashboard')
+            }
           })
           .catch(() => {
             setUser(null)
+            setisAuthenticated(false)
             setLoading(false)
+            removeAuthToken()
             if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
-              router.replace('/login')
+              router.replace('/')
             }
           })
       } else {
         setLoading(false)
       }
     }
-    //
+
     initAuth()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-
   }, [])
 
   const handleLogin = async (params: LoginParams, errorCallback?: ErrCallbackType) => {
@@ -156,7 +146,7 @@ const AuthProvider = ({ children }: Props) => {
 
         setUser(data)
         const returnUrl = router.query.returnUrl
-        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
+        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/app/dashboard'
         setisAuthenticated(true);
 
         // const privileges = response.data.privileges;
@@ -287,7 +277,7 @@ const AuthProvider = ({ children }: Props) => {
       console.log(err);
 
     }
-    router.push('/login')
+    router.push('/')
   }
 
   const values = {
