@@ -454,7 +454,7 @@ const SecondPage = () => {
                   <MenuItem value=''>Select Type</MenuItem>
                   <MenuItem value="college">College</MenuItem>
                   <MenuItem value="university">University</MenuItem>
-                  <MenuItem value="board">Board</MenuItem>
+                  {/* <MenuItem value="board">Board</MenuItem> */}
                 </CustomTextField>
               </Grid>
               <Grid item sm={3} xs={12}>
