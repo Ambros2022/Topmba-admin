@@ -5,7 +5,7 @@ import { DataGrid, GridColDef, GridPaginationModel, GridRenderCellParams, GridSo
 import Link from 'next/link'
 import axios1 from 'src/configs/adminaxios'
 import ServerSideToolbar from 'src/views/table/data-grid/ServerSideToolbar'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem } from '@mui/material'
 import toast from 'react-hot-toast'
 import Fab from '@mui/material/Fab'
 import Icon from 'src/@core/components/icon'
@@ -296,19 +296,68 @@ const SecondPage = () => {
 
 
 
+  const handleDownloadAll = async () => {
+    try {
+      setLoading(true)
+      const response = await axios1.get('api/admin/scholarship/get', {
+        params: {
+          columnname,
+          orderby,
+          page: 1,
+          size: 100000,
+          searchtext,
+          searchfrom
+        }
+      })
+
+      const allRows = response.data.data
+
+      // Create CSV header
+      const headers = ['ID', 'Name', 'Slug', 'Last Date', 'Status']
+      const csvRows = allRows.map((row: any) =>
+        [
+          `"${row.id || ''}"`,
+          `"${row.name || ''}"`,
+          `"${row.slug || ''}"`,
+          `"${row.last_date || ''}"`,
+          `"${row.status || ''}"`
+        ].join(',')
+      )
+
+      const csvContent = [headers.join(','), ...csvRows].join('\n')
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', 'all_scholarships.csv')
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setLoading(false)
+      toast.success('Download started')
+    } catch (err) {
+      setLoading(false)
+      toast.error('Failed to download all records')
+    }
+  }
+
   const AddButtonToolbar = () => {
 
     return (
-      <>
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Button color='success' variant='tonal' startIcon={<Icon icon='tabler:download' />} onClick={handleDownloadAll}>
+          Download All
+        </Button>
         <Link href={'./scholarship/add'}>
           <Fab color='primary' variant='extended' sx={{ '& svg': { mr: 1 } }}>
             <Icon icon='tabler:plus' />
             Add
           </Fab>
         </Link>
-
-      </>
-    );
+      </Box>
+    )
   };
 
   const AddButtonComponent = <AddButtonToolbar />;
