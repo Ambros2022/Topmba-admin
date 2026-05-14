@@ -345,19 +345,71 @@ const SecondPage = () => {
 
 
 
+  const handleDownloadAll = async () => {
+    try {
+      setLoading(true)
+      const response = await axios1.get('api/admin/exam/get', {
+        params: {
+          columnname,
+          orderby,
+          page: 1,
+          size: 100000,
+          searchtext,
+          searchfrom,
+          stream_id,
+          country_id
+        }
+      })
+
+      const allRows = response.data.data
+
+      // Create CSV header
+      const headers = ['ID', 'Exam Title', 'Slug', 'Country', 'Status', 'Listing Order']
+      const csvRows = allRows.map((row: any) =>
+        [
+          `"${row.id || ''}"`,
+          `"${row.exam_title || ''}"`,
+          `"${row.slug || ''}"`,
+          `"${row.country?.name || ''}"`,
+          `"${row.status || ''}"`,
+          `"${row.listing_order || ''}"`
+        ].join(',')
+      )
+
+      const csvContent = [headers.join(','), ...csvRows].join('\n')
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', 'all_exams.csv')
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setLoading(false)
+      toast.success('Download started')
+    } catch (err) {
+      setLoading(false)
+      toast.error('Failed to download all records')
+    }
+  }
+
   const AddButtonToolbar = () => {
 
     return (
-      <>
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Button color='success' variant='tonal' startIcon={<Icon icon='tabler:download' />} onClick={handleDownloadAll}>
+          Download All
+        </Button>
         <Link href={'./exam/add'}>
           <Fab color='primary' variant='extended' sx={{ '& svg': { mr: 1 } }}>
             <Icon icon='tabler:plus' />
             Add
           </Fab>
         </Link>
-
-      </>
-    );
+      </Box>
+    )
   };
 
   const AddButtonComponent = <AddButtonToolbar />;

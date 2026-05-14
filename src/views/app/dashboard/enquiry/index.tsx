@@ -2,11 +2,11 @@
 import { useEffect, useState, useCallback, ChangeEvent } from 'react'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import { DataGrid,  GridColDef, GridPaginationModel, GridRenderCellParams, GridSortModel } from '@mui/x-data-grid'
+import { DataGrid, GridColDef, GridPaginationModel, GridRenderCellParams, GridSortModel } from '@mui/x-data-grid'
 import Link from 'next/link'
 import axios1 from 'src/configs/adminaxios'
 import ServerSideToolbar from 'src/views/table/data-grid/ServerSideToolbar'
-import { Button,  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,  Grid,  MenuItem } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem } from '@mui/material'
 
 
 // ** Icon Imports
@@ -147,7 +147,7 @@ const SecondPage = () => {
       headerName: 'Name',
       renderCell: (params: GridRenderCellParams) => {
         const { row } = params;
-  
+
         return (
           <Typography variant='body2' sx={{ color: 'text.primary', fontWeight: 600, whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {row.name}
@@ -162,7 +162,7 @@ const SecondPage = () => {
       headerName: 'Contact Number',
       renderCell: (params: GridRenderCellParams) => {
         const { row } = params;
-  
+
         return (
           <Typography variant='body2' sx={{ color: 'text.primary', fontWeight: 600, whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {row.contact_number}
@@ -177,7 +177,7 @@ const SecondPage = () => {
       headerName: 'Url',
       renderCell: (params: GridRenderCellParams) => {
         const { row } = params;
-  
+
         return (
           //@ts-ignore
           <Typography variant='body3' sx={{ color: 'text.primary', fontWeight: 600, whiteSpace: 'normal', wordBreak: 'break-word' }}>
@@ -193,9 +193,9 @@ const SecondPage = () => {
       headerName: 'Date',
       renderCell: (params: GridRenderCellParams) => {
         const { row } = params;
-  
+
         const formattedDate = row?.created_at
-        ? new Date(row.created_at).toLocaleString('en-US', {
+          ? new Date(row.created_at).toLocaleString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
@@ -203,8 +203,8 @@ const SecondPage = () => {
             minute: 'numeric',
             hour12: true, // Change to false if you prefer 24-hour format
           })
-        : 'N/A';
-  
+          : 'N/A';
+
         return (
           //@ts-ignore
           <Typography variant='body3' sx={{ color: 'text.primary', fontWeight: 600, whiteSpace: 'normal', wordBreak: 'break-word' }}>
@@ -224,7 +224,7 @@ const SecondPage = () => {
       )
     }
   ];
-  
+
 
 
 
@@ -269,7 +269,7 @@ const SecondPage = () => {
     [paginationModel, reloadpage]
   );
 
-  const paginationchange = (model: GridPaginationModel, ) => {
+  const paginationchange = (model: GridPaginationModel,) => {
     setSize(model.pageSize);
     setPage(model.page + 1);
     setPaginationModel({ page: model.page, pageSize: model.pageSize });
@@ -296,7 +296,66 @@ const SecondPage = () => {
 
 
 
-  
+  const handleDownloadAll = async () => {
+    try {
+      setLoading(true)
+      const response = await axios1.get('api/admin/enquiry/get', {
+        params: {
+          columnname,
+          orderby,
+          page: 1,
+          size: 100000,
+          searchtext,
+          searchfrom
+        }
+      })
+
+      const allRows = response.data.data
+
+      // Create CSV header
+      const headers = ['ID', 'Name', 'Contact Number', 'Email', 'Url', 'Date']
+      const csvRows = allRows.map((row: any) =>
+        [
+          `"${row.id || ''}"`,
+          `"${row.name || ''}"`,
+          `"${row.contact_number || ''}"`,
+          `"${row.email || ''}"`,
+          `"${row.current_url || ''}"`,
+          `"${row.created_at || ''}"`
+        ].join(',')
+      )
+
+      const csvContent = [headers.join(','), ...csvRows].join('\n')
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', 'all_enquiries.csv')
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setLoading(false)
+      toast.success('Download started')
+    } catch (err) {
+      setLoading(false)
+      toast.error('Failed to download all records')
+    }
+  }
+
+  const AddButtonToolbar = () => {
+    return (
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Button color='success' variant='tonal' startIcon={<Icon icon='tabler:download' />} onClick={handleDownloadAll}>
+          Download All
+        </Button>
+      </Box>
+    )
+  }
+
+  const AddButtonComponent = <AddButtonToolbar />
+
   return (
     <Grid container spacing={6}>
 
@@ -319,7 +378,7 @@ const SecondPage = () => {
             onSortModelChange={handleSortModel}
             slots={{ toolbar: ServerSideToolbar }}
             onPaginationModelChange={paginationchange}
-            getRowHeight={() => 'auto'} 
+            getRowHeight={() => 'auto'}
             sx={{
               '& .MuiDataGrid-cell': {
                 padding: 4, // spacing between columns (default is around 2)
@@ -337,7 +396,7 @@ const SecondPage = () => {
                 value: searchtext,
                 clearSearch: () => handleSearch(''),
                 onChange: (event: ChangeEvent<HTMLInputElement>) => handleSearch(event.target.value),
-                // CustomToolbar: AddButtonComponent
+                CustomToolbar: AddButtonComponent
               },
             }}
           />

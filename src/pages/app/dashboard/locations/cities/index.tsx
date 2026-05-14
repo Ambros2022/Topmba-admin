@@ -7,7 +7,7 @@ import { DataGrid, GridColDef, GridPaginationModel, GridRenderCellParams, GridSo
 import Link from 'next/link'
 import axios1 from 'src/configs/adminaxios'
 import ServerSideToolbar from 'src/views/table/data-grid/ServerSideToolbar'
-import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem } from '@mui/material'
+import { Box, Button, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem } from '@mui/material'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import toast from 'react-hot-toast'
@@ -287,6 +287,53 @@ const SecondPage = () => {
     }
   }
 
+  const handleDownloadAll = async () => {
+    try {
+      setLoading(true)
+      const response = await axios1.get('api/admin/city/get', {
+        params: {
+          columnname: fieldname,
+          orderby,
+          page: 1,
+          size: 100000,
+          searchtext,
+          searchfrom,
+          state_id
+        }
+      })
+
+      const allRows = response.data.data
+
+      // Create CSV header
+      const headers = ['ID', 'City Name', 'Listing Order', 'State']
+      const csvRows = allRows.map((row: any) =>
+        [
+          `"${row.id || ''}"`,
+          `"${row.name || ''}"`,
+          `"${row.listing_order || ''}"`,
+          `"${row.state?.name || ''}"`
+        ].join(',')
+      )
+
+      const csvContent = [headers.join(','), ...csvRows].join('\n')
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', 'all_cities.csv')
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setLoading(false)
+      toast.success('Download started')
+    } catch (err) {
+      setLoading(false)
+      toast.error('Failed to download all records')
+    }
+  }
+
   const handleSearch = (value: string) => {
     setSearchtext(value)
   }
@@ -295,16 +342,18 @@ const SecondPage = () => {
   const AddButtonToolbar = () => {
 
     return (
-      <>
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Button color='success' variant='tonal' startIcon={<Icon icon='tabler:download' />} onClick={handleDownloadAll}>
+          Download All
+        </Button>
         <Link href={'./cities/add'}>
           <Fab color='primary' variant='extended' sx={{ '& svg': { mr: 1 } }}>
             <Icon icon='tabler:plus' />
             Add
           </Fab>
         </Link>
-
-      </>
-    );
+      </Box>
+    )
   };
 
   const AddButtonComponent = <AddButtonToolbar />;

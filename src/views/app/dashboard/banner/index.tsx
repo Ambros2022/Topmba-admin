@@ -8,7 +8,7 @@ import axios1 from 'src/configs/adminaxios'
 
 import ServerSideToolbar from 'src/views/table/data-grid/ServerSideToolbar'
 
-import { Button, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,  Grid,  MenuItem } from '@mui/material'
+import { Box, Button, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,  Grid,  MenuItem } from '@mui/material'
 
 
 // ** Icon Imports
@@ -300,19 +300,69 @@ const SecondPage = () => {
 
 
 
+  const handleDownloadAll = async () => {
+    try {
+      setLoading(true)
+      const response = await axios1.get('api/admin/banner/get', {
+        params: {
+          columnname,
+          orderby,
+          page: 1,
+          size: 100000,
+          searchtext,
+          searchfrom,
+          status
+        }
+      })
+
+      const allRows = response.data.data
+
+      // Create CSV header
+      const headers = ['ID', 'Title', 'Url', 'Promo Banner', 'Status']
+      const csvRows = allRows.map((row: any) =>
+        [
+          `"${row.id || ''}"`,
+          `"${row.title || ''}"`,
+          `"${row.link || ''}"`,
+          `"${row.promo_banner || ''}"`,
+          `"${row.status || ''}"`
+        ].join(',')
+      )
+
+      const csvContent = [headers.join(','), ...csvRows].join('\n')
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', 'all_banners.csv')
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setLoading(false)
+      toast.success('Download started')
+    } catch (err) {
+      setLoading(false)
+      toast.error('Failed to download all records')
+    }
+  }
+
   const AddButtonToolbar = () => {
 
     return (
-      <>
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Button color='success' variant='tonal' startIcon={<Icon icon='tabler:download' />} onClick={handleDownloadAll}>
+          Download All
+        </Button>
         <Link href={'./banner/add'}>
           <Fab color='primary' variant='extended' sx={{ '& svg': { mr: 1 } }}>
             <Icon icon='tabler:plus' />
             Add
           </Fab>
         </Link>
-
-      </>
-    );
+      </Box>
+    )
   };
 
   const AddButtonComponent = <AddButtonToolbar />;

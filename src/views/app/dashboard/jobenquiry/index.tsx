@@ -7,7 +7,7 @@ import Link from 'next/link'
 import axios1 from 'src/configs/adminaxios'
 import ServerSideToolbar from 'src/views/table/data-grid/ServerSideToolbar'
 
-import { Button,  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,  Grid,  MenuItem } from '@mui/material'
+import { Box, Button,  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,  Grid,  MenuItem } from '@mui/material'
 
 import toast from 'react-hot-toast'
 import Icon from 'src/@core/components/icon'
@@ -328,6 +328,12 @@ const SecondPage = () => {
     fetchTableData(orderby, searchtext, searchfrom, size, page, columnname)
   }, [fetchTableData, searchtext, orderby, searchfrom, size, page, columnname])
 
+  const handleSearch = (value: string) => {
+    setSearchtext(value)
+    setPage(1)
+    setPaginationModel(prev => ({ ...prev, page: 0 }))
+  }
+
   const handleSortModel = (newModel: GridSortModel) => {
     if (newModel.length) {
       setOrderby(newModel[0].sort)
@@ -338,12 +344,66 @@ const SecondPage = () => {
     }
   }
 
-  const handleSearch = (value: string) => {
-    setSearchtext(value)
+  const handleDownloadAll = async () => {
+    try {
+      setLoading(true)
+      const response = await axios1.get('api/admin/jobsenquires/get', {
+        params: {
+          columnname,
+          orderby,
+          page: 1,
+          size: 100000,
+          searchtext,
+          searchfrom
+        }
+      })
+
+      const allRows = response.data.data
+
+      // Create CSV header
+      const headers = ['ID', 'Name', 'Email', 'Phone', 'Job Position', 'Location', 'Date']
+      const csvRows = allRows.map((row: any) =>
+        [
+          `"${row.id || ''}"`,
+          `"${row.name || ''}"`,
+          `"${row.email || ''}"`,
+          `"${row.phone || ''}"`,
+          `"${row.jobspositions?.name || ''}"`,
+          `"${row.current_location || ''}"`,
+          `"${row.created_at || ''}"`
+        ].join(',')
+      )
+
+      const csvContent = [headers.join(','), ...csvRows].join('\n')
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', 'all_job_enquiries.csv')
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setLoading(false)
+      toast.success('Download started')
+    } catch (err) {
+      setLoading(false)
+      toast.error('Failed to download all records')
+    }
   }
 
+  const AddButtonToolbar = () => {
+    return (
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Button color='success' variant='tonal' startIcon={<Icon icon='tabler:download' />} onClick={handleDownloadAll}>
+          Download All
+        </Button>
+      </Box>
+    )
+  }
 
-
+  const AddButtonComponent = <AddButtonToolbar />
 
   return (
     <Grid container spacing={6}>
@@ -376,7 +436,7 @@ const SecondPage = () => {
                 value: searchtext,
                 clearSearch: () => handleSearch(''),
                 onChange: (event: ChangeEvent<HTMLInputElement>) => handleSearch(event.target.value),
-                // CustomToolbar: AddButtonComponent
+                CustomToolbar: AddButtonComponent
               },
             }}
           />

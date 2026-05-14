@@ -26,6 +26,11 @@ import TabList from '@mui/lab/TabList'
 import CardContent from '@material-ui/core/CardContent'
 import TabPanel from '@mui/lab/TabPanel'
 import CloseIcon from '@mui/icons-material/Close'
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker'
+import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import CustomInput from 'src/@core/components/pickersCoustomInput/index'
+import { useTheme } from '@mui/material/styles'
+import format from 'date-fns/format'
 
 interface Authordata {
   olddata?: any
@@ -41,6 +46,9 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
   const [selectedphoto, setSelectedphoto] = useState('')
   const [category, setCategory] = useState([])
   const isMountedRef = useIsMountedRef()
+  const theme = useTheme()
+  const { direction } = theme
+  const popperPlacement: ReactDatePickerProps['popperPlacement'] = direction === 'ltr' ? 'bottom-start' : 'bottom-end'
 
   const handleFileChangephoto = (files: any[]) => {
     setSelectedphoto(files[0])
@@ -68,6 +76,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
     meta_description: isAddMode ? '' : olddata.meta_description,
     meta_keywords: isAddMode ? '' : olddata.meta_keywords,
     overview: isAddMode ? '' : olddata.overview,
+    blog_date: isAddMode ? null : olddata.blog_date ? new Date(olddata.blog_date) : null,
+    writer_name: isAddMode ? '' : olddata.writer_name || '',
     status: isAddMode ? 'Published' : olddata.status
   }
 
@@ -97,6 +107,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
       formData.append('meta_description', data.meta_description)
       formData.append('meta_keywords', data.meta_keywords)
       formData.append('overview', data.overview)
+      formData.append('blog_date', data.blog_date ? format(new Date(data.blog_date), 'yyyy-MM-dd HH:mm:ss') : '')
+      formData.append('writer_name', data.writer_name)
       formData.append('status', data.status)
       formData.append('banner_image', selectedphoto)
 
@@ -136,6 +148,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
       formData.append('meta_description', data.meta_description)
       formData.append('meta_keywords', data.meta_keywords)
       formData.append('overview', data.overview)
+      formData.append('blog_date', data.blog_date ? format(new Date(data.blog_date), 'yyyy-MM-dd HH:mm:ss') : '')
+      formData.append('writer_name', data.writer_name)
       formData.append('status', data.status)
       if (selectedphoto == '') {
         toast.error('Please Upload Image', {
@@ -527,7 +541,7 @@ const {
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={12}>
+                  {/* <Grid item xs={12} sm={12}>
                     <Typography style={{ marginBottom: '10px' }}>Overview</Typography>
 
                     <Controller
@@ -542,6 +556,45 @@ const {
                             onChange={value => setValue('overview', value)}
                           />
                         </>
+                      )}
+                    />
+                  </Grid> */}
+
+                  <Grid item xs={12} sm={6}>
+                    <DatePickerWrapper>
+                      <Controller
+                        name='blog_date'
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                          <DatePicker
+                            showTimeSelect
+                            timeFormat='HH:mm'
+                            timeIntervals={15}
+                            selected={value}
+                            id='blog-date'
+                            dateFormat='MM/dd/yyyy h:mm aa'
+                            popperPlacement={popperPlacement}
+                            onChange={onChange}
+                            placeholderText='Click to select date and time'
+                            customInput={<CustomInput label='Blog Date' />}
+                          />
+                        )}
+                      />
+                    </DatePickerWrapper>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Controller
+                      name='writer_name'
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <CustomTextField
+                          fullWidth
+                          value={value}
+                          label='Writer Name'
+                          onChange={onChange}
+                          placeholder=''
+                        />
                       )}
                     />
                   </Grid>

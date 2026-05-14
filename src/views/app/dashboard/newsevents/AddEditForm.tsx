@@ -21,6 +21,11 @@ import FileUpload from 'src/@core/components/dropzone/FileUpload';
 import CustomAutocomplete from 'src/@core/components/mui/autocomplete'
 import useIsMountedRef from 'src/hooks/useIsMountedRef'
 import QuillEditor from 'src/@core/components/html-editor/index';
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker'
+import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import CustomInput from 'src/@core/components/pickersCoustomInput/index'
+import { useTheme } from '@mui/material/styles'
+import format from 'date-fns/format'
 
 
 interface Authordata {
@@ -39,6 +44,9 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
     const [selectedpdf, setSelectedpdf] = useState('');
     const [category, setCategory] = useState([]);
     const isMountedRef = useIsMountedRef();
+    const theme = useTheme()
+    const { direction } = theme
+    const popperPlacement: ReactDatePickerProps['popperPlacement'] = direction === 'ltr' ? 'bottom-start' : 'bottom-end'
 
 
 
@@ -99,6 +107,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
         meta_description: isAddMode ? '' : olddata.meta_description,
         meta_keywords: isAddMode ? '' : olddata.meta_keywords,
         overview: isAddMode ? '' : olddata.overview,
+        news_date: isAddMode ? null : olddata.news_date ? new Date(olddata.news_date) : null,
         status: isAddMode ? 'Published' : olddata.status,
         country_id: (isAddMode || !olddata) ? '' : olddata.country,
         // listing_order: isAddMode ? '' : olddata.listing_order,
@@ -135,6 +144,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
             formData.append('meta_description', data.meta_description);
             formData.append('meta_keywords', data.meta_keywords);
             formData.append('overview', data.overview);
+            formData.append('news_date', data.news_date ? format(new Date(data.news_date), 'yyyy-MM-dd HH:mm:ss') : '');
             formData.append('country_id', data.country_id.id);
             formData.append('pdf_file', selectedpdf);
             formData.append('banner_image', selectedphoto);
@@ -183,6 +193,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
             formData.append('meta_description', data.meta_description);
             formData.append('meta_keywords', data.meta_keywords);
             formData.append('overview', data.overview);
+            formData.append('news_date', data.news_date ? format(new Date(data.news_date), 'yyyy-MM-dd HH:mm:ss') : '');
             formData.append('listing_order', data.listing_order);
             formData.append('is_trending', data.is_trending);
             if (selectedphoto == '') {
@@ -506,6 +517,28 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                                 />
                             )}
                         />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <DatePickerWrapper>
+                            <Controller
+                                name='news_date'
+                                control={control}
+                                render={({ field: { value, onChange } }) => (
+                                    <DatePicker
+                                        showTimeSelect
+                                        timeFormat='HH:mm'
+                                        timeIntervals={15}
+                                        selected={value}
+                                        id='news-date'
+                                        dateFormat='MM/dd/yyyy h:mm aa'
+                                        popperPlacement={popperPlacement}
+                                        onChange={onChange}
+                                        placeholderText='Click to select date and time'
+                                        customInput={<CustomInput label='News Date' />}
+                                    />
+                                )}
+                            />
+                        </DatePickerWrapper>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <FormLabel component='legend' style={{ marginBottom: 0 }}>Select status</FormLabel>

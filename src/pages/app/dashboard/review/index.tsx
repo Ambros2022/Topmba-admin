@@ -434,6 +434,57 @@ const SecondPage = () => {
     }
   }
 
+  const handleDownloadAll = async () => {
+    try {
+      setLoading(true)
+      const response = await axios1.get('api/admin/review/get', {
+        params: {
+          columnname,
+          orderby,
+          page: 1,
+          size: 100000,
+          searchtext,
+          searchfrom,
+          college_id,
+          course_id
+        }
+      })
+
+      const allRows = response.data.data
+
+      // Create CSV header
+      const headers = ['ID', 'User Name', 'Type', 'Rating', 'College', 'Course', 'Status']
+      const csvRows = allRows.map((row: any) =>
+        [
+          `"${row.id || ''}"`,
+          `"${row.reviewuser?.name || ''}"`,
+          `"${row.review_type || ''}"`,
+          `"${row.userrating || ''}"`,
+          `"${row.clgreview?.name || ''}"`,
+          `"${row.course_type || ''}"`,
+          `"${row.is_approved === 1 ? 'Approved' : 'Pending'}"`
+        ].join(',')
+      )
+
+      const csvContent = [headers.join(','), ...csvRows].join('\n')
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', 'all_reviews.csv')
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setLoading(false)
+      toast.success('Download started')
+    } catch (err) {
+      setLoading(false)
+      toast.error('Failed to download all records')
+    }
+  }
+
   const handleSearch = (value: string) => {
     setSearchtext(value)
   }
@@ -573,6 +624,11 @@ const SecondPage = () => {
                 value: searchtext,
                 clearSearch: () => handleSearch(''),
                 onChange: (event: ChangeEvent<HTMLInputElement>) => handleSearch(event.target.value),
+                CustomToolbar: (
+                  <Button color='success' variant='tonal' startIcon={<Icon icon='tabler:download' />} onClick={handleDownloadAll}>
+                    Download All
+                  </Button>
+                )
               },
             }}
           />
