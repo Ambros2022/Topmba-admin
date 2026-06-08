@@ -172,12 +172,12 @@ const navigation = (): VerticalNavItemsType => {
     //   icon: 'tabler:clipboard-text',
     //   auth: false
     // },
-    {
-      title: 'General Course',
-      path: '/app/dashboard/generalcourse',
-      icon: 'tabler:book-filled',
-      auth: false
-    },
+    // {
+    //   title: 'General Course',
+    //   path: '/app/dashboard/generalcourse',
+    //   icon: 'tabler:book-filled',
+    //   auth: false
+    // },
 
     {
       title: 'Amenities',

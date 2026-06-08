@@ -168,7 +168,7 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
         is_associated: isAddMode ? 0 : olddata.is_associated ? olddata.is_associated : 0,
         is_popular: isAddMode ? 0 : olddata.is_popular ? olddata.is_popular : 0,
 
-        collegeamenities: [],
+        amenities: [],
         streams: [],
         exams: [],
         programs: [],
@@ -493,8 +493,6 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
             formData.append('programs', JSON.stringify(data.programs));
             formData.append('recoginations', JSON.stringify(data.recoginations));
 
-
-            setLoading(false)
             try {
                 console.log("selectedlogo1", selectedlogo)
                 const response = await axios1.post(url, formData)
