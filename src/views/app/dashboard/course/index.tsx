@@ -169,15 +169,15 @@ const SecondPage = () => {
     },
 
     {
-      flex: 0.175,
-      minWidth: 200,
-      field: 'generalcourse.name',
-      headerName: 'Course',
+      flex: 0.1,
+      minWidth: 100,
+      field: 'course_type',
+      headerName: 'Course Type',
       renderCell: (params: GridRenderCellParams) => {
         const { row } = params;
         return (
           <Typography noWrap variant='body2' sx={{ color: 'text.primary', fontWeight: 600 }}>
-            {row?.generalcourse?.name}
+            {row?.course_type}
           </Typography>
         );
       }
@@ -331,14 +331,15 @@ const SecondPage = () => {
       const allRows = response.data.data
 
       // Create CSV header
-      const headers = ['ID', 'College', 'Course', 'Status', 'Slug']
+      const headers = ['ID', 'College','Slug', 'course_type', 'Status']
       const csvRows = allRows.map((row: any) =>
         [
           `"${row.id || ''}"`,
           `"${row.college?.name || ''}"`,
-          `"${row.generalcourse?.name || ''}"`,
-          `"${row.status || ''}"`,
-          `"${row.slug || ''}"`
+            `"${row.slug || ''}"`,
+          `"${row.course_type || ''}"`,
+          `"${row.status || ''}"`
+        
         ].join(',')
       )
 
@@ -449,7 +450,7 @@ const SecondPage = () => {
                   {colleges.length === 0 && <MenuItem disabled>Loading...</MenuItem>}
                 </CustomTextField>
               </Grid>
-              <Grid item sm={3} xs={12}>
+              {/* <Grid item sm={3} xs={12}>
                 <CustomTextField
                   select
                   fullWidth
@@ -470,7 +471,7 @@ const SecondPage = () => {
                   ))}
                   {generalCourses.length === 0 && <MenuItem disabled>Loading...</MenuItem>}
                 </CustomTextField>
-              </Grid>
+              </Grid> */}
 
 
               <Grid item sm={3} xs={12}>
@@ -515,7 +516,7 @@ const SecondPage = () => {
               <Grid item sm={3} xs={12}>
                 <Button sx={{ mt: 0 }} variant="contained" color='error'
                   onClick={() => {
-                    setGeneral_course_id('');
+                    // setGeneral_course_id('');
                     setCourse_type('');
                     setStatus('');
                     setCollege_id('');

@@ -189,8 +189,8 @@ const SecondPage = () => {
     {
       flex: 0.175,
       minWidth: 200,
-      field: 'job_description',
-      headerName: 'Description',
+      field: 'exp_required',
+      headerName: 'Experience',
       renderCell: (params: GridRenderCellParams) => {
         const { row } = params;
     
@@ -199,7 +199,25 @@ const SecondPage = () => {
             noWrap
             variant='body2'
             sx={{ color: 'text.primary', fontWeight: 600 }}
-            dangerouslySetInnerHTML={{ __html: row.job_description }}
+            dangerouslySetInnerHTML={{ __html: row.exp_required }}
+          />
+        );
+      }
+    },
+    {
+      flex: 0.175,
+      minWidth: 200,
+      field: 'total_positions',
+      headerName: 'Positions',
+      renderCell: (params: GridRenderCellParams) => {
+        const { row } = params;
+    
+        return (
+          <Typography
+            noWrap
+            variant='body2'
+            sx={{ color: 'text.primary', fontWeight: 600 }}
+            dangerouslySetInnerHTML={{ __html: row.total_positions }}
           />
         );
       }
