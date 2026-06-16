@@ -345,13 +345,13 @@ const SecondPage = () => {
       const allRows = response.data.data
 
       // Create CSV header
-      const headers = ['ID', 'Name', 'Slug', 'Category', 'Status', 'Blog Date', 'Writer Name']
+      const headers = ['Category', 'ID', 'Name', 'Slug', 'Status', 'Blog Date', 'Writer Name']
       const csvRows = allRows.map((row: any) =>
         [
+          `"${row.blogcategories?.name || ''}"`,
           `"${row.id || ''}"`,
           `"${row.name || ''}"`,
           `"${row.slug || ''}"`,
-          `"${row.blogcategories?.name || ''}"`,
           `"${row.status || ''}"`,
           `"${row.blog_date || ''}"`,
           `"${row.writer_name || ''}"`
