@@ -133,13 +133,13 @@ const Home = () => {
           title="Colleges"
           value={`${pagedata.Published_colleges}/${pagedata.Total_colleges}`}
         />
-        {/* <CardItem
+        <CardItem
           icon={<BsBank />}
 
           href="/app/dashboard/college/"
           title="Universities"
           value={`${pagedata.Published_universities}/${pagedata.Total_universitys}`}
-        /> */}
+        />
         {/* <CardItem
           icon={<BsBank2 />}
 
@@ -154,12 +154,12 @@ const Home = () => {
           title="Specialisation"
           value={pagedata.stream}
         />
-        <CardItem
+        {/* <CardItem
           icon={<BsBorderWidth />}
           href="/app/dashboard/generalcourse/"
           title="General Courses"
           value={pagedata.generalcourse}
-        />
+        /> */}
         <CardItem
 
           icon={<BsBookHalf />}
