@@ -59,12 +59,19 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
   const schema: any = yup.object().shape({
     name: yup.string().trim().required(),
     h1_title: yup.string().trim().required(),
-    slug: yup.string().trim().required()
+    slug: yup.string().trim().required(),
+    short_name: yup.string().trim().nullable(),
+    duration: yup
+      .number()
+      .transform((val, orig) => (orig === '' ? null : val))
+      .nullable()
   })
 
   const defaultValues = {
     name: isAddMode ? '' : olddata.name,
     slug: isAddMode ? '' : olddata.slug,
+    short_name: isAddMode ? '' : olddata.short_name || '',
+    duration: isAddMode ? '' : olddata.duration || '',
     h1_title: isAddMode ? '' : olddata.h1_title,
     description: isAddMode ? '' : olddata.description,
     top_college: isAddMode ? '' : olddata.top_college,
@@ -98,6 +105,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
       formData.append('id', updateid)
       formData.append('name', data.name)
       formData.append('slug', data.slug)
+      formData.append('short_name', data.short_name || '')
+      formData.append('duration', data.duration || '')
       formData.append('h1_title', data.h1_title)
       formData.append('description', data.description)
       formData.append('top_college', data.top_college)
@@ -139,6 +148,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
       const formData = new FormData()
       formData.append('name', data.name)
       formData.append('slug', data.slug)
+      formData.append('short_name', data.short_name || '')
+      formData.append('duration', data.duration || '')
       formData.append('h1_title', data.h1_title)
       formData.append('description', data.description)
       formData.append('top_college', data.top_college)
@@ -400,6 +411,43 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                   />
                 </Grid>
 
+                <Grid item xs={12} sm={4}>
+                  <Controller
+                    name='short_name'
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        label='Short Name'
+                        onChange={onChange}
+                        placeholder=''
+                        error={Boolean(errors.short_name)}
+                        helperText={errors.short_name?.message as string}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={4}>
+                  <Controller
+                    name='duration'
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='number'
+                        value={value}
+                        label='Duration'
+                        onChange={onChange}
+                        placeholder=''
+                        error={Boolean(errors.duration)}
+                        helperText={errors.duration?.message as string}
+                      />
+                    )}
+                  />
+                </Grid>
+
                 <Grid item xs={12} sm={12}>
                   <Typography style={{ marginBottom: '10px' }}>description</Typography>
 
@@ -512,6 +560,8 @@ const AddEditForm: FC<Authordata> = ({ olddata, isAddMode }) => {
                     )}
                   />
                 </Grid>
+
+           
 
                 <Grid item xs={12} sm={3}>
                   <FileUpload

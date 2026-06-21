@@ -373,13 +373,13 @@ const Home = () => {
         <SectionHeader title="Academic Directory" />
         <CardItem
           icon={<BsBuilding />}
-          href="/app/dashboard/college/"
+          href="/app/dashboard/college?type=college"
           title="Colleges"
           value={`${pagedata.Published_colleges}/${pagedata.Total_colleges}`}
         />
         <CardItem
           icon={<BsBank />}
-          href="/app/dashboard/college/"
+          href="/app/dashboard/college?type=university"
           title="Universities"
           value={`${pagedata.Published_universities}/${pagedata.Total_universitys}`}
         />

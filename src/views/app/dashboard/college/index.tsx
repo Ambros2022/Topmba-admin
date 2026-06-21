@@ -1,5 +1,6 @@
 // ** React Imports
 import { useEffect, useState, useCallback, ChangeEvent } from 'react'
+import { useRouter } from 'next/router'
 // ** MUI Imports
 
 import Box from '@mui/material/Box'
@@ -139,6 +140,7 @@ type DataGridRowType = {
 
 const SecondPage = () => {
   // ** States
+  const router = useRouter()
 
   const [countries, setCountries] = useState([]);
   const [country_id, setCountry_id] = useState('')
@@ -344,6 +346,12 @@ const SecondPage = () => {
     setPaginationModel({ page: model.page, pageSize: model.pageSize });
 
   }
+
+  useEffect(() => {
+    if (router.isReady && router.query.type) {
+      setType(router.query.type as string);
+    }
+  }, [router.isReady, router.query.type]);
 
   useEffect(() => {
     fetchTableData(orderby, searchtext, searchfrom, size, page, columnname, country_id, type, status)
